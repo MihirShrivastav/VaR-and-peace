@@ -5,16 +5,16 @@ This repository contains the implementation of Structured Recurrent Neural Netwo
 #### 1. Introduction: VaR and ES in Risk Management
 Value-at-Risk (VaR)
 
-VaR is a widely used measure in financial risk management that estimates the potential loss in the value of a portfolio over a given time horizon at a specified confidence level. Mathematically, for a confidence level αα:
-P(L>VaRα)=1−α
-P(L>VaRα​)=1−α
+VaR is a widely used measure in financial risk management that estimates the potential loss in the value of a portfolio over a given time horizon at a specified confidence level. Mathematically, for a confidence level $\alpha$:
 
-where LL is the portfolio loss.
+$$P(L > VaR_{\alpha}) = 1 - \alpha$$
+
+where $L$ is the portfolio loss.
 Expected Shortfall (ES)
 
 ES (also called Conditional VaR) provides an estimate of the expected loss beyond the VaR threshold. Unlike VaR, which only gives a cutoff point, ES accounts for the severity of losses in the tail:
-ESα=E[L∣L>VaRα]
-ESα​=E[L∣L>VaRα​]
+
+$$ES_{\alpha} = E[L | L > VaR_{\alpha}]$$
 
 It is considered a superior risk measure since it accounts for tail risk, which is particularly relevant for financial crises.
 
@@ -35,10 +35,9 @@ Among these, SRNN-VE-3 was found to be the most effective, as it allows for nonl
     Market Data: Collected from Yahoo Finance for major financial indices and commodities.
     Feature Engineering:
         Log Returns computed as:
-        rt=ln⁡(Pt/Pt−1)
-        rt​=ln(Pt​/Pt−1​)
+        $$r_t = \ln(P_t/P_{t-1})$$
         Squared Returns used as input to model volatility patterns.
-        VaR and ES "True" Labels generated using a GARCH(1,1) model with a Student’s t-distribution.
+        VaR and ES "True" Labels generated using a GARCH(1,1) model with a Student's t-distribution.
     Rolling Window: A 512-day rolling window is applied for estimating risk measures.
 
 3.2 Model Architecture
@@ -55,23 +54,22 @@ We implemented SRNN-VE-3, the best-performing model from the paper, with:
 3.3 Loss Function: FZ0
 
 The FZ0 loss function is used to align the network outputs with regulatory backtesting requirements. It is defined as:
-L=−1ES(1α(y⋅1y≤VaR)−ES)+VaRES+log⁡(−ES)−1
-L=−ES1​(α1​(y⋅1y≤VaR​)−ES)+ESVaR​+log(−ES)−1
+
+$$L = -\frac{1}{ES}\left(\frac{1}{\alpha}(y \cdot 1_{y \leq VaR}) - ES\right) + \frac{VaR}{ES} + \log(-ES) - 1$$
 
 where:
 
-    yy = True loss realization
-    VaRVaR = Predicted VaR
-    ESES = Predicted Expected Shortfall
+    $y$ = True loss realization
+    $VaR$ = Predicted VaR
+    $ES$ = Predicted Expected Shortfall
 
 To improve model robustness, we added:
 
     Deviation penalty to prevent underestimation:
-    0.5⋅MSE(VaRpred,VaRtrue)
-    0.5⋅MSE(VaRpred​,VaRtrue​)
+    $$0.5 \cdot MSE(VaR_{pred}, VaR_{true})$$
+    
     Confidence penalty to correct overconfidence in low-risk scenarios:
-    0.1⋅∣VaRpred−VaRtrue∣
-    0.1⋅∣VaRpred​−VaRtrue​∣
+    $$0.1 \cdot |VaR_{pred} - VaR_{true}|$$
 
 #### 4. Training and Evaluation
 
@@ -79,9 +77,9 @@ To improve model robustness, we added:
 
     The SRNN-VE-3 model is trained for each financial asset separately.
     Adam optimizer is used with:
-        Learning rate = 10−410−4
-        Weight decay = 10−310−3
-        Gradient Clipping = 0.50.5
+        Learning rate = $10^{-4}$
+        Weight decay = $10^{-3}$
+        Gradient Clipping = $0.5$
     Dropout (0.2) is applied for regularization.
 
 4.2 Evaluation Metrics
@@ -99,7 +97,7 @@ To improve model robustness, we added:
 
 5.2 Model Limitations
 
-    The R² values remain low, indicating the model does not fully explain market risk.
+    The $R^2$ values remain low, indicating the model does not fully explain market risk.
     The model struggles with extreme market movements, likely due to the limitations of squared returns as an input feature.
 
 5.3 Possible Improvements
