@@ -1,7 +1,8 @@
-VaR and ES Forecasting using Structured Recurrent Neural Networks (SRNNs)
+### VaR and ES Forecasting using Structured Recurrent Neural Networks (SRNNs)
 
 This repository contains the implementation of Structured Recurrent Neural Networks (SRNNs) for forecasting Value-at-Risk (VaR) and Expected Shortfall (ES), following the methodology outlined in the referenced research paper. The objective is to evaluate the predictive capacity of recurrent neural networks for financial risk forecasting, using SRNN-VE models trained on historical financial data.
-1. Introduction: VaR and ES in Risk Management
+
+#### 1. Introduction: VaR and ES in Risk Management
 Value-at-Risk (VaR)
 
 VaR is a widely used measure in financial risk management that estimates the potential loss in the value of a portfolio over a given time horizon at a specified confidence level. Mathematically, for a confidence level αα:
@@ -16,7 +17,8 @@ ESα=E[L∣L>VaRα]
 ESα​=E[L∣L>VaRα​]
 
 It is considered a superior risk measure since it accounts for tail risk, which is particularly relevant for financial crises.
-2. Research Basis: SRNNs for Risk Forecasting
+
+#### 2. Research Basis: SRNNs for Risk Forecasting
 
 The referenced research paper proposes Structured RNN models (SRNN-VE) to forecast dynamic VaR and ES estimates, using historical squared returns as input features. The paper presents three variations of SRNN models:
 
@@ -25,7 +27,9 @@ The referenced research paper proposes Structured RNN models (SRNN-VE) to foreca
     SRNN-VE-3: Hybrid approach combining the direct hidden state and its transformation.
 
 Among these, SRNN-VE-3 was found to be the most effective, as it allows for nonlinear interactions in volatility estimation.
-3. Implementation Methodology
+
+#### 3. Implementation Methodology
+
 3.1 Data Processing
 
     Market Data: Collected from Yahoo Finance for major financial indices and commodities.
@@ -69,7 +73,8 @@ To improve model robustness, we added:
     0.1⋅∣VaRpred−VaRtrue∣
     0.1⋅∣VaRpred​−VaRtrue​∣
 
-4. Training and Evaluation
+#### 4. Training and Evaluation
+
 4.1 Training
 
     The SRNN-VE-3 model is trained for each financial asset separately.
@@ -85,7 +90,8 @@ To improve model robustness, we added:
     Scatter Plots: Show alignment between predicted VaR/ES and true values.
     Time-Series Analysis: Visualizes rolling predictions vs. actual VaR/ES.
 
-5. Results and Observations
+#### 5. Results and Observations
+
 5.1 Prediction Accuracy
 
     SRNN-VE-3 underestimates extreme risk events, but its predictions align reasonably in normal volatility periods.
@@ -102,11 +108,11 @@ To improve model robustness, we added:
     Use alternative loss functions, such as the pinball loss, to better capture tail risk.
     Implement Bayesian recurrent models for better uncertainty quantification.
 
-6. Conclusion
+#### 6. Conclusion
 
 This project successfully implements the SRNN-based VaR and ES forecasting framework proposed in the paper. The results indicate that deep learning-based volatility modeling is feasible but requires further improvements for capturing extreme risk events.
 
-7. References
+#### 7. References
 
 Qiu, Z., Lazar, E., & Nakata, K. (2024). VaR and ES forecasting via recurrent neural network-based stateful models.
 International Review of Financial Analysis, Volume 92, 103102.
